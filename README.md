@@ -1,4 +1,5 @@
-# 音声アシスタント プロジェクト
+# audio-assistant
+🎤 音声アシスタントプロジェクト - STT/LLM/TTS機能を統合したクロスプラットフォーム音声アシスタント
 
 ## 概要
 音声アシスタントプロジェクトのスケルトンコードです。STT（音声→テキスト）、LLM（チャット応答）、TTS（テキスト→音声）の機能を提供します。
@@ -51,20 +52,24 @@ audioAuto/
 
 ## セットアップ手順
 
-### 1. 依存パッケージのインストール
+### 1. 自動セットアップ（推奨）
 ```bash
-pip install -r requirements.txt
+python setup.py
 ```
 
-### 2. 環境変数の設定
+### 2. 手動セットアップ
 ```bash
+# 依存パッケージのインストール
+pip install -r requirements.txt
+
+# 環境変数の設定
 cp .env.example .env
 # .envファイルを編集して必要な設定を行う
 ```
 
 ### 3. サーバーの起動
 ```bash
-python src/backend/main.py
+python start_server.py
 ```
 
 ### 4. API確認
@@ -98,6 +103,15 @@ python src/backend/main.py
 - LLM: OpenAI GPT API
 - TTS: Google Text-to-Speech (gTTS)
 
+## 主な機能
+- 🎤 **音声入力**: マイクからの音声キャプチャ
+- 🔤 **音声認識**: Whisper（ローカル/クラウド）による音声→テキスト変換
+- 🤖 **AI会話**: LLaMA（ローカル）/OpenAI（クラウド）による対話生成
+- 🔊 **音声合成**: pyttsx3（ローカル）/gTTS（クラウド）によるテキスト→音声変換
+- 💾 **会話履歴**: Supabase PostgreSQLでの履歴管理
+- ⚡ **ホットキー**: グローバルショートカットでの起動
+- 🌐 **クロスプラットフォーム**: Windows/Mac/Linux対応
+
 ## 今後の開発予定
 - [ ] Electronクライアントの実装
 - [ ] モバイルアプリ（React Native/Flutter）
@@ -112,149 +126,6 @@ python src/backend/main.py
 - Windows、Mac、Linux対応
 - GPU/CPU両対応
 - オンライン/オフライン切替可能
-
-## 主な機能
-- 🎤 **音声入力**: マイクからの音声キャプチャ
-- 🔤 **音声認識**: Whisper（ローカル/クラウド）による音声→テキスト変換
-- 🤖 **AI会話**: LLaMA（ローカル）/OpenAI（クラウド）による対話生成
-- 🔊 **音声合成**: Coqui TTS（ローカル）/クラウドAPIによるテキスト→音声変換
-- 💾 **会話履歴**: Supabase PostgreSQLでの履歴管理
-- ⚡ **ホットキー**: グローバルショートカットでの起動
-- 🌐 **クロスプラットフォーム**: Windows/Mac/Linux対応
-
-## セットアップ
-
-### 1. 環境要件
-- Python 3.8+
-- Node.js 16+
-- Git
-
-### 2. リポジトリのクローン
-```bash
-git clone <repository-url>
-cd audioAuto
-```
-
-### 3. バックエンドのセットアップ
-```bash
-# Python仮想環境の作成
-python -m venv venv
-
-# 仮想環境の有効化
-# Windows
-venv\Scripts\activate
-# Mac/Linux
-source venv/bin/activate
-
-# 依存パッケージのインストール
-pip install -r requirements.txt
-```
-
-### 4. フロントエンド（Electron）のセットアップ
-```bash
-cd src/frontend/electron
-npm install
-```
-
-### 5. 環境変数の設定
-```bash
-# .envファイルを作成
-cp .env.example .env
-
-# .envファイルを編集して必要な設定を入力
-# - OpenAI API Key（クラウドモード使用時）
-# - Supabase URL/Key（会話履歴保存時）
-```
-
-### 6. ローカルモデルのダウンロード（オプション）
-```bash
-# modelsディレクトリを作成
-mkdir models
-
-# Whisperモデル（自動ダウンロード）
-# LLaMAモデル（手動ダウンロード）
-# wget https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.q4_0.gguf -O models/llama-7b-chat-q4.gguf
-```
-
-## 使用方法
-
-### 基本的な起動手順
-
-#### 1. バックエンドサーバーの起動
-```bash
-# プロジェクトルートで
-cd src/backend
-python main.py
-```
-サーバーは `http://localhost:8000` で起動します。
-
-#### 2. Electronアプリの起動
-```bash
-# 別のターミナルで
-cd src/frontend/electron
-npm start
-```
-
-### モード切替
-
-#### クラウドモード（デフォルト）
-```bash
-# .envファイルで設定
-USE_LOCAL_MODE=false
-```
-- OpenAI APIを使用
-- インターネット接続が必要
-- 高精度・高速
-
-#### ローカルモード
-```bash
-# .envファイルで設定
-USE_LOCAL_MODE=true
-```
-- ローカルモデルを使用
-- オフライン動作可能
-- プライバシー重視
-
-### 基本操作
-
-1. **音声入力**: マイクボタンをクリックまたはホットキー（Ctrl+Shift+Space）
-2. **テキスト入力**: テキストエリアに直接入力
-3. **設定変更**: 設定パネルでモード切替、音声選択など
-4. **会話履歴**: 自動的にSupabaseに保存（設定で無効化可能）
-
-### API エンドポイント
-
-バックエンドAPIは以下のエンドポイントを提供：
-
-- `POST /api/stt/transcribe` - 音声認識
-- `POST /api/llm/chat` - テキスト生成
-- `POST /api/tts/synthesize` - 音声合成
-- `GET /api/stt/info` - STTサービス情報
-- `GET /api/llm/info` - LLMサービス情報
-- `GET /api/tts/info` - TTSサービス情報
-
-## 開発
-
-### テストの実行
-```bash
-# バックエンドテスト
-cd src/backend
-pytest tests/
-
-# フロントエンドテスト
-cd src/frontend/electron
-npm test
-```
-
-### ビルド
-```bash
-# Electronアプリのビルド
-cd src/frontend/electron
-npm run build
-
-# 実行ファイルの作成
-npm run dist
-```
 
 ## トラブルシューティング
 
@@ -272,15 +143,6 @@ npm run dist
    - .envファイルのURL/Keyが正しいか確認
    - ネットワーク接続を確認
 
-### ログの確認
-```bash
-# バックエンドログ
-tail -f logs/app.log
-
-# Electronログ
-# アプリ内の開発者ツールで確認
-```
-
 ## 貢献
 
 1. このリポジトリをフォーク
@@ -295,4 +157,4 @@ tail -f logs/app.log
 
 ## サポート
 
-問題や質問がある場合は、[Issues](https://github.com/your-repo/issues) で報告してください。 
+問題や質問がある場合は、[Issues](https://github.com/Haruto-Sa/audio-assistant/issues) で報告してください。

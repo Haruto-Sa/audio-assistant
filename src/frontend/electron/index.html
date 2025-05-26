@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音声アシスタント</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+    <header class="app-header">
+        <h1>音声アシスタント</h1>
+        <div class="mode-indicator">
+            <span id="mode-text">クラウドモード</span>
+            <span id="connection-status" class="status-indicator online">接続済み</span>
+        </div>
+    </header>
+
+    <main class="chat-container">
+        <div id="conversation-history" class="conversation-history">
+            <!-- 会話履歴はJavaScriptで動的に挿入される -->
+        </div>
+
+    <div class="input-container">
+        <textarea id="text-input" placeholder="テキストを入力するか、マイクボタンを押して話しかけてください..."></textarea>
+        <div class="action-buttons">
+        <button id="mic-button" class="primary-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14Z" fill="currentColor"/>
+                <path d="M17 11C17 14.53 14.39 17.44 11 17.93V21H13V23H11H9V21H11V17.93C7.61 17.44 5 14.53 5 11H7C7 13.76 9.24 16 12 16C14.76 16 17 13.76 17 11H19H17Z" fill="currentColor"/>
+            </svg>
+        </button>
+        <button id="send-button" class="primary-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor"/>
+            </svg>
+        </button>
+        </div>
+    </div>
+    </main>
+
+    <div id="recording-indicator" class="recording-indicator hidden">
+        <div class="pulse"></div>
+        <span>録音中...</span>
+    </div>
+
+    <div id="settings-panel" class="settings-panel hidden">
+        <div class="settings-header">
+        <h2>設定</h2>
+        <button id="close-settings" class="icon-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="currentColor"/>
+            </svg>
+        </button>
+        </div>
+        
+        <div class="settings-content">
+        <div class="setting-group">
+        <h3>一般設定</h3>
+        
+        <div class="setting-item">
+            <label for="mode-select">動作モード</label>
+            <select id="mode-select">
+                <option value="cloud">クラウドモード</option>
+                <option value="local">ローカルモード</option>
+            </select>
+        </div>
+        
+        <div class="setting-item">
+            <label for="hotkey-input">ホットキー</label>
+            <input type="text" id="hotkey-input" value="CommandOrControl+Shift+Space" readonly>
+            <button id="record-hotkey" class="small-button">変更</button>
+        </div>
+        
+        <div class="setting-item">
+            <label for="theme-select">テーマ</label>
+            <select id="theme-select">
+                <option value="system">システム設定に合わせる</option>
+                <option value="light">ライトモード</option>
+                <option value="dark">ダークモード</option>
+            </select>
+        </div>
+        </div>
+        
+        <div class="setting-group">
+            <h3>音声設定</h3>
+            
+            <div class="setting-item">
+            <label for="voice-select">音声</label>
+            <select id="voice-select">
+                <option value="default">デフォルト</option>
+                <!-- 音声リストはJavaScriptで動的に追加 -->
+            </select>
+        </div>
+        
+        <div class="setting-item">
+            <label for="volume-slider">音量</label>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.8">
+            <span id="volume-value">80%</span>
+        </div>
+        </div>
+        
+        <div class="setting-group">
+            <h3>その他</h3>
+            
+            <div class="setting-item checkbox">
+                <input type="checkbox" id="save-history-checkbox" checked>
+                <label for="save-history-checkbox">会話履歴を保存する</label>
+            </div>
+            
+            <div class="setting-item">
+                <button id="clear-history" class="danger-button">会話履歴をクリア</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="settings-footer">
+        <button id="save-settings" class="primary-button">保存</button>
+        <button id="cancel-settings" class="secondary-button">キャンセル</button>
+    </div>
+    </div>
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html> 

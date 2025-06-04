@@ -28,7 +28,7 @@ class Conversation(BaseModel):
     title: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
-    messages: List[Message] = []
+    messages: List[Message] = Field(default_factory=list)
 
     class Config:
         orm_mode = True
